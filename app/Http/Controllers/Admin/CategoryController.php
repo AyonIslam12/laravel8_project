@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Exception;
+
 
 class CategoryController extends Controller
 {
@@ -15,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::simplepaginate(5);
+        $categories = Category::orderBy('id','desc')->simplepaginate(5);
 
 
        return view('admin.category.manage',compact('categories'));
@@ -43,6 +45,28 @@ class CategoryController extends Controller
            'name' => 'required|string|unique:categories',
            'status' => 'required|string:',
         ]);
+        try {
+            /*$category = new Category();
+            $category->user_id = auth()->id();
+            $category->name = $request->name;
+            $category->slug = strtolower(str_replace(' ','-',$request->name));
+            $category->status = $request->status;
+            $category->save();*/
+
+            Category::create([
+            'user_id'  => auth()->id(),
+            'name'     => $request->name,
+            'slug'     => strtolower(str_replace(' ','-',$request->name)),
+            'status'   => $request->status,
+
+            ]);
+            session()->flash('type','success');
+            session()->flash('message','Category save success!');
+        }catch (Exception $exception ){
+            session()->flash('type','danger');
+            session()->flash('message',$exception->getMessage());
+        }
+        return redirect()->back();
 
     }
 
@@ -54,7 +78,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+       $category = Category::find($id);
+        return view('admin.category.view', compact('category'));
     }
 
     /**
@@ -65,7 +90,11 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        if ($category)
+        return view('admin.category.edit', compact('category'));
+        else
+            return redirect()->back();
     }
 
     /**
@@ -88,10 +117,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-       $cat = Category::find($id);
-       $cat->delete();
-       session()->flash('type','success');
-       session()->flash('message','Category delete success!');
+        try {
+            $cat = Category::find($id);
+            $cat->delete();
+            session()->flash('type','success');
+            session()->flash('message','Category delete success!');
+        }catch (Exception $exception ){
+            session()->flash('type','danger');
+            session()->flash('message','Category not deleted successfully!');
+        }
        return redirect()->back();
     }
 }

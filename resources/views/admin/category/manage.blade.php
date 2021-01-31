@@ -39,13 +39,17 @@
                        <td>{{$category->name }}</td>
                        <td>{{$category->slug }}</td>
                        <td>{{ ucfirst($category->status)  }}</td>
-                       <td>
+                       <td class="d-flex">
+                         <a href="{{ route('admin.category.show',$category->id) }}" class="btn btn-info btn-sm mx-1">View</a>
+                         <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-primary btn-sm mx-1">Edit</a>
+
                            <form action="{{ route('admin.category.destroy',$category->id) }}" method="post">
                                @csrf
                                @method('DELETE')
-                               <button type="submit" class="btn btn-danger">Delete</button>
+                               <button type="submit" class="btn btn-danger btn-sm  mx-1">Delete</button>
 
                            </form>
+
                        </td>
                    </tr>
 
