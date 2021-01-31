@@ -20,7 +20,7 @@ class PostTableSeeder extends Seeder
             $name = $facker->name;
             Post::create([
                 'user_id' => rand(1,21),
-                'category_id' => rand(1,10),
+                'category_id' => rand(1,20),
                 'title' => $name,
                 'slug' => strtolower(str_replace(' ','-',$name)),
                 'desc' => $facker->paragraph,

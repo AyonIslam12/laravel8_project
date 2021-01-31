@@ -60,7 +60,7 @@ class SiteController extends Controller{
         'password'  => ['required','min:6'],//array style
     ]);
    if ( auth()->attempt($data)) {
-     return redirect('/');
+     return redirect()->route('admin.dashboard');
 
      }else{
        session()->flash('type','danger');
