@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.category.create');
     }
 
     /**
@@ -39,7 +39,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'name' => 'required|string|unique:categories',
+           'status' => 'required|string:',
+        ]);
+
     }
 
     /**
@@ -84,6 +88,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $cat = Category::find($id);
+       $cat->delete();
+       session()->flash('type','success');
+       session()->flash('message','Category delete success!');
+       return redirect()->back();
     }
 }

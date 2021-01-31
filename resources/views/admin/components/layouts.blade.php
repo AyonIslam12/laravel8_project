@@ -23,13 +23,13 @@
 @include('admin.components.header')
 
 <!-- Page Content -->
-<div class="container" style="min-height: 500px">
+<div class="container" style="min-height: 550px">
 
-    <div class="row" >
+
 
         @yield('content')
 
-    </div>
+
     <!-- /.row -->
 
 </div>
