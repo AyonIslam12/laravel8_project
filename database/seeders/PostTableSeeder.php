@@ -17,13 +17,13 @@ class PostTableSeeder extends Seeder
     {
         $facker = Factory::create();
         foreach (range(1,20) as $index){
-            $name = $facker->name;
+            $name = $facker->paragraph;
             Post::create([
                 'user_id' => rand(1,21),
                 'category_id' => rand(1,20),
                 'title' => $name,
                 'slug' => strtolower(str_replace(' ','-',$name)),
-                'desc' => $facker->paragraph,
+                'desc' => $facker->paragraphs(2,true),
                 'image' => $facker->imageUrl(),
                 'status' => 'active',
             ]);

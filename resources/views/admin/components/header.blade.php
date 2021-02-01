@@ -20,6 +20,15 @@
                         <a class="dropdown-item {{ request()->is('admin/category') ? 'active' : ''}}" href="{{ route('admin.category.index') }}">Manage Category</a>
 
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->is('admin/category','admin/category/create') ? 'active' : ''}}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Posts
+                    </a>
+                    <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item {{ request()->is('admin/category/create') ? 'active' : ''}} " href="{{ route('admin.post.create') }}">Add Post</a>
+                        <a class="dropdown-item {{ request()->is('admin/category') ? 'active' : ''}}" href="{{ route('admin.post.index') }}">Manage Posts</a>
+
+                </li>
 
                 @auth()
                     {{--{{ auth()->user()->name }}--}}
