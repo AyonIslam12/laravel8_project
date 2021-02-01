@@ -7,7 +7,7 @@
 
        <h4 class="py-3 text-center"> Update Category</h4>
   <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-6 mb-3">
           @if($errors->any())
               <div class="alert alert-danger">
                   <ul>
@@ -28,8 +28,9 @@
               <div class="card-header">
                   Upadte Category form
               </div>
-             <form action="{{ route('admin.category.store') }}" method="post">
+             <form action="{{ route('admin.category.update',$category->id) }}" method="post">
                  @csrf
+                 @method('PUT')
                  <div class="card-body">
                      <div class="form-group">
                          <label for="name">Name</label>

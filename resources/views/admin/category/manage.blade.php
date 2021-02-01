@@ -28,7 +28,7 @@
                    <th>Name</th>
                    <th>Slug</th>
                    <th>Status</th>
-                   <th>Action</th>
+                   <th class="text-center">Action</th>
                </tr>
                </thead>
                @foreach($categories as $category)
@@ -39,7 +39,7 @@
                        <td>{{$category->name }}</td>
                        <td>{{$category->slug }}</td>
                        <td>{{ ucfirst($category->status)  }}</td>
-                       <td class="d-flex">
+                       <td class="d-flex justify-content-center">
                          <a href="{{ route('admin.category.show',$category->id) }}" class="btn btn-info btn-sm mx-1">View</a>
                          <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-primary btn-sm mx-1">Edit</a>
 

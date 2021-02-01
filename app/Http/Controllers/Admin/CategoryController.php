@@ -106,7 +106,34 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:4|max:16|unique:categories,id,'.$id,
+            'status' => 'required|string:',
+        ]);
+        try {
+            $category = Category::find($id);
+            $category->user_id = auth()->id();
+            $category->name = $request->name;
+            $category->slug = strtolower(str_replace(' ','-',$request->name));
+            $category->status = $request->status;
+            $category->update();
+
+            /*Category::create([
+                'user_id'  => auth()->id(),
+                'name'     => $request->name,
+                'slug'     => strtolower(str_replace(' ','-',$request->name)),
+                'status'   => $request->status,
+
+            ]);*/
+            session()->flash('type','success');
+            session()->flash('message','Category upadate success!');
+        }catch (Exception $exception ){
+            session()->flash('type','danger');
+            session()->flash('message',$exception->getMessage());
+        }
+        return redirect()->back();
+
+
     }
 
     /**

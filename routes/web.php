@@ -13,7 +13,7 @@ Route::get('/post',[SiteController::class,'singlePost']);
 Route::prefix('user')->name('user.')->group(function(){
     Route::get('/login',[SiteController::class,'showLoginForm'])->name('login-form');
     Route::post('/login',[SiteController::class,'login'])->name('login');
-    Route::get('/logout',[SiteController::class,'logout'])->name('logout');
+    Route::post('/logout',[SiteController::class,'logout'])->name('logout');
     Route::get('/register',[SiteController::class,'showRegisterFrom'])->name('register-form');
     Route::post('/register',[SiteController::class,'registration'])->name('registration');
 
@@ -27,6 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function (){
         Route::post('/store',[CategoryController::class,'store'])->name('store');
         Route::get('/{id}',[CategoryController::class,'show'])->name('show');
         Route::get('/{id}/edit',[CategoryController::class,'edit'])->name('edit');
+        Route::put('/{id}',[CategoryController::class,'update'])->name('update');
         Route::delete('/{id}',[CategoryController::class,'destroy'])->name('destroy');
     });
 });

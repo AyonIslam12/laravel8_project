@@ -24,7 +24,14 @@
                 @auth()
                     {{--{{ auth()->user()->name }}--}}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.logout') }}">Logout</a>
+                       {{-- <a class="nav-link" href="{{ route('user.logout') }}">Logout</a>--}}
+                        <form action="{{ route('user.logout') }}" method="post">
+                            @csrf
+                            <a class="nav-link" href="{{ route('user.logout') }}" onclick="event.preventDefault(); this.closest('form').submit()">Logout</a>
+
+                           {{-- <button type="submit" class="btn btn-danger">Logout</button>--}}
+
+                        </form>
                     </li>
                 @endauth
             </ul>
