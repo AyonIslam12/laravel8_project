@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Exception;
@@ -27,7 +28,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        /*Category::where('status','active')->get();*/
+        $categories = Category::all();
+        return view('admin.post.create',compact('categories'));
     }
 
     /**
@@ -38,7 +41,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $request->validate([
+           'category' => 'required',
+           'title' => 'required|string|min:10|max:225',
+           'image' => 'required|image',
+           'desc' => 'required|string|min:20',
+           'status' => 'required|string',
+
+
+       ]);
+       dd($request->all());
     }
 
     /**

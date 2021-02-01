@@ -1,13 +1,13 @@
 @extends('admin.components.layouts')
 @section('title')
-    Create-Categories
+    Create-Posts
 @endsection
 
 @section('content')
 
-       <h4 class="py-3 text-center"> Create new Category</h4>
+       <h4 class="py-3 text-center"> Create new Post</h4>
   <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-8 mb-3">
           @if($errors->any())
               <div class="alert alert-danger">
                   <ul>
@@ -26,15 +26,32 @@
               @endif
           <div class="card">
               <div class="card-header">
-                  Add new Category form.
+                  Add new Post form
               </div>
-             <form action="{{ route('admin.category.store') }}" method="post">
+             <form action="{{ route('admin.post.store') }}" method="post" enctype="multipart/form-data">
                  @csrf
                  <div class="card-body">
                      <div class="form-group">
-                         <label for="name">Name</label>
-                         <input type="text" class="form-control  " id="name" name="name" value="{{ old('name') }}" placeholder="Enter Category Name...">
+                         <label for="category">Category</label>
+                        <select class="form-control" name="category" id="category">
+                            <option value="">Select Category</option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}"> {{ $category->name }}</option>
+                            @endforeach
+                        </select>
 
+                     </div>
+                     <div class="form-group">
+                         <label for="title">Title</label>
+                         <input type="text" class="form-control  " id="title" name="title" value="{{ old('title') }}" placeholder="Enter post Name...">
+                     </div>
+                     <div class="form-group">
+                         <label for="image">Image</label>
+                         <input type="file" class="form-control" id="image" name="image" >
+                     </div>
+                     <div class="form-group">
+                         <label for="desc">Description</label>
+                         <textarea  class="form-control  " id="desc" name="desc"></textarea>
                      </div>
                      <div class="form-group">
                          <label for="status" >Status</label><br>

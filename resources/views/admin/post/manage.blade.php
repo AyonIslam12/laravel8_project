@@ -27,6 +27,7 @@
                    <th>Sl No</th>
                    <th>Post Title</th>
                    <th>Slug</th>
+                   <th>Description</th>
                    <th>Image</th>
                    <th>Status</th>
                    <th class="text-center">Action</th>
@@ -39,6 +40,7 @@
                        <td>{{$post->id }}</td>
                        <td>{{$post->title }}</td>
                        <td><a href="{{$post->slug }}" target="_blank">Click here</a></td>
+                       <td><a href="{{$post->desc }}" target="_blank">Click here</a></td>
                        <td><img src="{{ $post->image  }}" width="60px" alt=""></td>
                        <td>{{ ucfirst($post->status)  }}</td>
                        <td class="d-flex justify-content-center">
