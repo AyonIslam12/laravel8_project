@@ -118,7 +118,7 @@ class CategoryController extends Controller
             $category->status = $request->status;
             $category->update();
 
-            /*Category::create([
+            /*Category::update([
                 'user_id'  => auth()->id(),
                 'name'     => $request->name,
                 'slug'     => strtolower(str_replace(' ','-',$request->name)),

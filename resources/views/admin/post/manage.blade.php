@@ -41,7 +41,7 @@
                        <td>{{$post->title }}</td>
                        <td><a href="{{$post->slug }}" target="_blank">Click here</a></td>
                        <td><a href="{{$post->desc }}" target="_blank">Click here</a></td>
-                       <td><img src="{{ $post->image  }}" width="60px" alt=""></td>
+                       <td><img src="{{ asset('uploads/post/'.$post->image) }}" width="60px" alt=""></td>
                        <td>{{ ucfirst($post->status)  }}</td>
                        <td class="d-flex justify-content-center">
                          <a href="{{ route('admin.post.show',$post->id) }}" class="btn btn-info btn-sm mx-1">View</a>

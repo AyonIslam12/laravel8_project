@@ -36,7 +36,7 @@
                         <select class="form-control" name="category" id="category">
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}"> {{ $category->name }}</option>
+                            <option value="{{ $category->id }}" {{ old('category')== $category->id ? 'selected':'' }}> {{ $category->name }}</option>
                             @endforeach
                         </select>
 
@@ -51,16 +51,16 @@
                      </div>
                      <div class="form-group">
                          <label for="desc">Description</label>
-                         <textarea  class="form-control  " id="desc" name="desc"></textarea>
+                         <textarea  class="form-control  " id="desc" name="desc">{{ old('desc')}}</textarea>
                      </div>
                      <div class="form-group">
                          <label for="status" >Status</label><br>
                          <div class="custom-control custom-radio custom-control-inline">
-                             <input type="radio" id="active" name="status" value="active" class="custom-control-input">
+                             <input type="radio" id="active" name="status" value="active" {{ old('status') == 'active' ? 'checked':'' }} class="custom-control-input">
                              <label class="custom-control-label" for="active">Active</label>
                          </div>
                          <div class="custom-control custom-radio custom-control-inline">
-                             <input type="radio" id="inactive" name="status" value="inactive" class="custom-control-input">
+                             <input type="radio" id="inactive" name="status" value="inactive" {{ old('status') == 'inactive' ? 'checked':'' }} class="custom-control-input">
                              <label class="custom-control-label" for="inactive">Inactive</label>
                          </div>
 

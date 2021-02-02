@@ -43,14 +43,34 @@ class PostController extends Controller
     {
        $request->validate([
            'category' => 'required',
-           'title' => 'required|string|min:10|max:225',
+           'title' => 'required|string|min:10|max:225|unique:posts',
            'image' => 'required|image',
            'desc' => 'required|string|min:20',
            'status' => 'required|string',
-
-
        ]);
-       dd($request->all());
+
+
+        try {
+            $image = $request->file('image');
+            $file_name = rand(11111,99999).date('ymdhis.'). $image->getClientOriginalExtension();
+            Post::create([
+                'user_id' => auth()->id( ),
+                'category_id' => $request->category,
+                'title' => $request->title,
+                'image' => $file_name,
+                'slug' => strtolower(str_replace(' ','-',$request->title)),
+                'desc' => $request->desc,
+                'status' => $request->status,
+            ]);
+            if ($image->isValid()){
+                $image->storeAs('post',$file_name);
+            }
+
+        }catch (Exception $exception){
+            session()->flash('type','danger');
+            session()->flash('message',$exception->getMessage());
+        }
+        return redirect()->back();
     }
 
     /**
@@ -73,7 +93,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $categories = Category::all();
+        return view('admin.post.edit', compact('post','categories'));
+
     }
 
     /**
@@ -85,7 +108,40 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'category' => 'required',
+            'title' => 'required|string|min:10|max:225|unique:posts,id,'.$id,
+            'desc' => 'required|string|min:20',
+            'status' => 'required|string',
+
+
+        ]);
+
+
+        try {
+           /* $image = $request->file('image');
+            $file_name = rand(11111,99999).date('ymdhis.'). $image->getClientOriginalExtension();*/
+            $post = Post::find($id);
+            $post->update([
+                'user_id' => auth()->id( ),
+                'category_id' => $request->category,
+                'title' => $request->title,
+                //'image' => $file_name,
+                'slug' => strtolower(str_replace(' ','-',$request->title)),
+                'desc' => $request->desc,
+                'status' => $request->status,
+            ]);
+           /* if ($image->isValid()){
+                $image->storeAs('post',$file_name);
+            }*/
+
+            session()->flash('type','success');
+            session()->flash('message','Post upadte success!');
+        }catch (Exception $exception){
+            session()->flash('type','danger');
+            session()->flash('message',$exception->getMessage());
+        }
+        return redirect()->back();
     }
 
     /**
@@ -98,12 +154,18 @@ class PostController extends Controller
     {
         try {
             $post = Post::find($id);
-            $post->delete();
-            session()->flash('type','success');
-            session()->flash('message','Post delete success!');
+
+                if (file_exists(public_path('uploads/post/'.$post->image))){
+                    unlink(public_path('uploads/post/'.$post->image));
+                }else{
+                    $post->delete();
+                    session()->flash('type','success');
+                    session()->flash('message','Post delete success!');
+                }
+
         }catch (Exception $exception ){
             session()->flash('type','danger');
-            session()->flash('message','Category not deleted successfully!');
+            session()->flash('message',$exception->getMessage());
         }
         return redirect()->back();
     }
