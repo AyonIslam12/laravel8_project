@@ -66,6 +66,8 @@ class PostController extends Controller
                 $image->storeAs('post',$file_name);
             }
 
+            session()->flash('type','success');
+            session()->flash('message','Post create success!');
         }catch (Exception $exception){
             session()->flash('type','danger');
             session()->flash('message',$exception->getMessage());
