@@ -110,6 +110,8 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $post = Post::find($id);
+        if (!$post) return redirect()->back();
         $request->validate([
             'category' => 'required',
             'title' => 'required|string|min:10|max:225|unique:posts,id,'.$id,
@@ -121,21 +123,26 @@ class PostController extends Controller
 
 
         try {
-           /* $image = $request->file('image');
-            $file_name = rand(11111,99999).date('ymdhis.'). $image->getClientOriginalExtension();*/
-            $post = Post::find($id);
+            if($request->file('image')){
+                $image = $request->file('image');
+                $file_name = rand(11111,99999).date('ymdhis.'). $image->getClientOriginalExtension();
+                 if ($image->isValid()){
+                $image->storeAs('post',$file_name);
+                }
+                if (file_exists(public_path('uploads/post/'.$post->image))) unlink(public_path('uploads/post/'.$post->image));
+            }else{
+                $file_name = $post->image;
+            }
             $post->update([
                 'user_id' => auth()->id( ),
                 'category_id' => $request->category,
                 'title' => $request->title,
-                //'image' => $file_name,
+                'image' => $file_name,
                 'slug' => strtolower(str_replace(' ','-',$request->title)),
                 'desc' => $request->desc,
                 'status' => $request->status,
             ]);
-           /* if ($image->isValid()){
-                $image->storeAs('post',$file_name);
-            }*/
+
 
             session()->flash('type','success');
             session()->flash('message','Post upadte success!');
@@ -157,13 +164,12 @@ class PostController extends Controller
         try {
             $post = Post::find($id);
 
-                if (file_exists(public_path('uploads/post/'.$post->image))){
-                    unlink(public_path('uploads/post/'.$post->image));
-                }else{
+                if (file_exists(public_path('uploads/post/'.$post->image))) unlink(public_path('uploads/post/'.$post->image));
+
                     $post->delete();
                     session()->flash('type','success');
                     session()->flash('message','Post delete success!');
-                }
+
 
         }catch (Exception $exception ){
             session()->flash('type','danger');
